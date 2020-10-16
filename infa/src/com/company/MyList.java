@@ -28,15 +28,6 @@ public class MyList<T> implements Collection<T> {
             return true;
         }
 
-//        public int compare(T value) {
-//            Comparator comp = new Comparable();
-//            if (comp()) {
-//                return 0;
-//            } else {
-//                return -1;
-//            }
-//        }
-
 
         public T getValue() {
             return value;
@@ -128,39 +119,6 @@ public class MyList<T> implements Collection<T> {
             return null;
         }
     }
-
-//    public int givePozition(Node value) {
-//        Node iter = this.begin;
-//        this.pozition = 1;
-//        while (iter.hasNext()) {
-//            if (iter.compare(value) == 0) {
-//                break;
-//            } else {
-//                iter = iter.getNext();
-//                this.pozition++;
-//            }
-//        }
-//        return this.pozition;
-//    }
-
-
-//    public void sort() {
-//        Node iter = this.begin;
-//        while(iter.hasNext()) {
-//            Node iterNext = iter.next;
-//            while(iterNext != null) {
-//                if(iter.compare(iterNext) == -1) {
-////                    swap(iter.value, iterNext.value);
-//                    //System.out.println(iter.value);
-//                    int temp = (int) iter.value;
-//                    iter.value = iterNext.value;
-//                    iterNext.value = temp;
-//                }
-//                iterNext = iterNext.next;
-//            }
-//            iter = iter.next;
-//        }
-//    }
 
     public void swap(int firstPos, int secondPos) {
         Node<T> itFirstPos = indexAt(firstPos);
