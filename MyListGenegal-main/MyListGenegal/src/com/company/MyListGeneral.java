@@ -1,15 +1,9 @@
 package com.company;
 
-import org.w3c.dom.ls.LSOutput;
-
-import java.lang.reflect.Array;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.stream.IntStream;
 
-public class MyList<T> implements Collection<T> {
+public class MyListGeneral<T> implements Collection<T> {
     class Node<T> {
         private T value;
         private Node<T> next;
@@ -27,7 +21,6 @@ public class MyList<T> implements Collection<T> {
             }
             return true;
         }
-
 
         public T getValue() {
             return value;
@@ -61,14 +54,17 @@ public class MyList<T> implements Collection<T> {
 
     private Node begin;
     private int counter;
-    private int length;
     private int pozition;
+    private Node<T> root;
+    private long length;
+    private Comparable comparable;
 
-    public MyList() {
+    public MyListGeneral(Comparable compare) {
         this.begin = null;
         this.counter = 1;
         this.length = 1;
         this.pozition = 1;
+        this.comparable = compare;
     }
 
 
@@ -120,6 +116,37 @@ public class MyList<T> implements Collection<T> {
         }
     }
 
+    public int givePozition(Node<T> value) {
+        Node iter = this.begin;
+        this.pozition = 1;
+        while (iter.hasNext()) {
+            if (comparable.compare(iter, value) == 0) {
+                break;
+            } else {
+                iter = iter.getNext();
+                this.pozition++;
+            }
+        }
+        return this.pozition;
+    }
+
+
+    public void sort() {
+        Node iter = this.begin;
+        while(iter.hasNext()) {
+            Node iterNext = iter.next;
+            while(iterNext != null) {
+                if(comparable.compare(iter, iterNext) == 1) {
+                    int temp = (int) iter.value;
+                    iter.value = iterNext.value;
+                    iterNext.value = temp;
+                }
+                iterNext = iterNext.next;
+            }
+            iter = iter.next;
+        }
+    }
+
     public void swap(int firstPos, int secondPos) {
         Node<T> itFirstPos = indexAt(firstPos);
         Node<T> itSecondPos = indexAt(secondPos);
@@ -144,7 +171,7 @@ public class MyList<T> implements Collection<T> {
             iter = iter.getNext();
             this.length++;
         }
-        return this.length;
+        return (int)this.length;
     }
 
     @Override
@@ -183,7 +210,7 @@ public class MyList<T> implements Collection<T> {
     public boolean remove(Object o) {
         return false;
     }
-//Не понятно что делают методы
+    //Не понятно что делают методы
     @Override
     public boolean containsAll(Collection<?> c) {
         return false;
@@ -223,4 +250,8 @@ public class MyList<T> implements Collection<T> {
     public void clear() {
 
     }
+}
+
+interface Comparable {
+    int compare(MyListGeneral.Node a, MyListGeneral.Node b);
 }

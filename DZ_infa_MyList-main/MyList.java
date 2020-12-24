@@ -1,6 +1,6 @@
 package com.company;
 
-public class MyListUp {
+public class MyList {
     class Node {
         private int value;
         private Node next;
@@ -19,7 +19,7 @@ public class MyListUp {
             return true;
         }
 
-        public int compare1(Node value) {
+        public int compare(Node value) {
             if (value.getValue() > this.value) {
                 return 1;
             } else if (value.getValue() == this.value) {
@@ -41,10 +41,6 @@ public class MyListUp {
             return next;
         }
 
-        public void setNext(Node next) {
-            this.next = next;
-        }
-
         public Node getNow() {
             return now;
         }
@@ -53,6 +49,9 @@ public class MyListUp {
             this.now = now;
         }
 
+        public void setNext(Node next) {
+            this.next = next;
+        }
 
         public String toString() {
             return Integer.toString(this.value);
@@ -62,26 +61,25 @@ public class MyListUp {
     private Node begin;
     private int counter;
     private int length;
-    private int pozition;
 
-    public MyListUp() {
+    public MyList() {
         this.begin = null;
         this.counter = 1;
         this.length = 1;
-        this.pozition = 1;
     }
 
-    public void addUp(int value) {
+    public void add(int value) {
         Node newvalue = new Node(value);
         if (this.begin == null) {
             this.begin = newvalue;
         } else {
-            this.endUp().setNext(newvalue);
+            this.end().setNext(newvalue);
         }
+        this.length++;
     }
 
 
-    public String toStringUp() {
+    public String toString() {
         String result = "[ ";
         if (this.begin != null) {
             Node iter = this.begin;
@@ -95,7 +93,7 @@ public class MyListUp {
         return result;
     }
 
-    public Node endUp() {
+    public Node end() {
         Node iter = this.begin;
         while (iter.hasNext()) {
             iter = iter.getNext();
@@ -103,9 +101,9 @@ public class MyListUp {
         return iter;
     }
 
-    public Node indexAtUp(int index) {
+    public Node indexAt(int index) {
         Node iter = this.begin;
-        int iter2 = kolUp();
+        int iter2 = this.length;
         if (index <= iter2) {
             while (iter.hasNext() && this.counter < index) {
                 iter = iter.getNext();
@@ -118,84 +116,44 @@ public class MyListUp {
         }
     }
 
-    public int givePozitionUp(Node value) {
+    public void sort() {
         Node iter = this.begin;
-        this.pozition = 1;
-        while (iter.hasNext()) {
-            if (iter.compare1(value) == 0) {
-                break;
-            } else {
-                iter = iter.getNext();
-                this.pozition++;
-            }
-        }
-        return this.pozition;
-    }
-
-
-    public int kolUp() {
-        this.length = 1;
-        Node iter = this.begin;
-        while (iter.hasNext()) {
-            iter = iter.getNext();
-            this.length++;
-        }
-        return this.length;
-
-    }
-
-    public void sortUp() {
-        Node iter = this.begin;
-//        for (int i = 1; i < kol() - 1; i++) {
-//            while (iter.hasNext()) {
-//                if (iter.compare(iter.next) == 1) {
-//                    swap(givePozition(iter), givePozition(iter.next));
-//                }
-//                iter = iter.getNext();
-//            }
-//        }
-//        while (iter.hasNext()) {
-//            for (int i = 1; i < kol() - 1; i++) {
-//                if (iter.compare(iter.next) == 1) {
-//                    System.out.println(iter);
-//                    System.out.println(iter.next);
-//                    swap(givePozition(iter), givePozition(iter.next));
-//                    System.out.println(iter);
-//                    System.out.println(iter.next);
-//                }
-//                iter = iter.getNext();
-//            }
-//        }
         while(iter.hasNext()) {
-            Node iterNext = iter.next;
-            while(iterNext != null) {
-                if(iter.compare1(iterNext) == -1) {
-//                    swap(iter.value, iterNext.value);
-                    //System.out.println(iter.value);
+            Node iterTemp = iter.next;
+            while(iterTemp != null) {
+                if(iter.compare(iterTemp) == -1) {
+//swap(iter.value, iterTemp.value);
+//System.out.println(iter.value);
                     int temp = iter.value;
-                    iter.value = iterNext.value;
-                    iterNext.value = temp;
+                    iter.value = iterTemp.value;
+                    iterTemp.value = temp;
                 }
-                iterNext = iterNext.next;
+                iterTemp = iterTemp.next;
             }
             iter = iter.next;
         }
     }
 
-    public void swapUp(int firstPos, int secondPos) {
-        Node itFirstPos = indexAtUp(firstPos);
-        Node itSecondPos = indexAtUp(secondPos);
-        Node itPreFirstPos = indexAtUp(firstPos - 1);
-        Node itPreSecondPos = indexAtUp(secondPos - 1);
+    public void swap(int firstPos, int secondPos) {
+        Node itFirstPos = indexAt(firstPos);
+        Node itSecondPos = indexAt(secondPos);
+        Node itPreFirstPos = indexAt(firstPos - 1);
+        Node itPreSecondPos = indexAt(secondPos - 1);
         if (firstPos == 1) {
             this.begin = itSecondPos;
             itPreSecondPos.next = itFirstPos;
+
+            Node iter = itFirstPos.next;
+            itFirstPos.next = itSecondPos.next;
+            itSecondPos.next = iter;
+
         } else {
             itPreFirstPos.setNext(itSecondPos);
             itPreSecondPos.setNext(itFirstPos);
+
+            Node iter = itFirstPos.next;
+            itFirstPos.next = itSecondPos.next;
+            itSecondPos.next = iter;
         }
-        Node iter = itFirstPos.next;
-        itFirstPos.next = itSecondPos.next;
-        itSecondPos.next = iter;
     }
 }
